@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.model.player;
 
+
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(schema = "players")
