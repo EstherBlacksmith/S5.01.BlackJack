@@ -2,8 +2,6 @@ package cat.itacademyS5_01.game.service;
 
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.repository.GameRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,9 +11,10 @@ public class GameService {
     private final GameRepository gameRepository;
 
 
-    public GameService(GameRepository gameRepository) {
+    public GameService( GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
+
 
     public Mono<Game> findById(String id) {
         return gameRepository.findById(id);
@@ -25,8 +24,7 @@ public class GameService {
         return gameRepository.findAll();
     }
 
-    public Mono<Game> save(int playerId) {
-        Game game = new Game(playerId);
+    public Mono<Game> save(Game game) {
         return gameRepository.save(game);
     }
 
