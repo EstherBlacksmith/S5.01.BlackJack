@@ -5,11 +5,15 @@ import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.gameplay.service.GamePlayService;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 @WebFluxTest(controllers = GameController.class)
 
@@ -29,9 +33,34 @@ class GameControllerTest {
         gameResponse = new GameResponse(123, "Alice", 0, 0);
     }
 
+    @Test
+    @DisplayName("Returns 201 if the game is created")
+    void startNewGame_Returns201IfCreated() {
+        Mockito.when(gamePlayService.startGame(Mockito.any(GameRequest.class)))
+                .thenReturn(Mono.just(gameResponse));
+
+        webTestClient.post()
+                .uri("/games/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(gameRequest)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(GameResponse.class)
+                .isEqualTo(gameResponse);
+    }
 
     @Test
-    void startNewGame_Returns201IfCreated() {
+    @DisplayName("Returns bad request if the player name is not in the request")
+    void startNewGame_Returns400IfNotCreatedBecausePayerNameMissing() {
 
+        GameRequest missingNameRequest = new GameRequest("");
+
+        webTestClient.post()
+                .uri("/games/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(missingNameRequest)
+                .exchange()
+                .expectStatus().isBadRequest();
     }
+
 }
