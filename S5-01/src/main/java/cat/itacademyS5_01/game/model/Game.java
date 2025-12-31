@@ -1,21 +1,26 @@
 package cat.itacademyS5_01.game.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Table("games")
+@NoArgsConstructor
+@Data
+@Document("games")
 public class Game {
     @Id
     private int id;
 
-    private int playerResult;
+    private int playerScore;
+    private int bankScore;
+    private String playerName;
 
-    private int bankResult;
-
-    private int playerId;
-
-    public Game(int playerId) {
-        this.playerId = playerId;
+    public Game(String playerName) {
+        this.playerName = playerName;
+        this.playerScore = 0;
+        this.bankScore = 0;
     }
 
 }

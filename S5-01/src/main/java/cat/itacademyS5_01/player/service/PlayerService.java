@@ -20,7 +20,9 @@ public class PlayerService {
     public Mono<Player> getById(int id) {
         return repository.findById(id);
     }
-
+    public Mono<Player> findByName(String name) {
+        return repository.findByName(name);
+    }
     public Flux<Player> getAll() {
         return repository.findAll();
     }
