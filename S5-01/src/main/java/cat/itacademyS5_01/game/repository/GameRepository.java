@@ -7,8 +7,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface GameRepository  extends ReactiveCrudRepository<Game,String> {
+public interface GameRepository extends ReactiveCrudRepository<Game, String> {
     Flux<Game> findAllByValue(String value);
+
     Mono<Game> findFirstByPlayer(Mono<String> player);
 
 }

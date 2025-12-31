@@ -11,7 +11,7 @@ public class Player {
     @Id
     private int id;
 
-    private String name;
+    private final String name;
 
     public Player(String name) {
         this.name = name;

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface PlayerRepository  extends ReactiveCrudRepository<Player, Integer> {
+public interface PlayerRepository extends ReactiveCrudRepository<Player, Integer> {
     Mono<Player> findByName(String name);
 }

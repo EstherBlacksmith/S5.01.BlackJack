@@ -1,8 +1,13 @@
 package cat.itacademyS5_01.game.controller;
 
-import cat.itacademyS5_01.game.dto.GameRequest;import cat.itacademyS5_01.game.dto.GameResponse;import cat.itacademyS5_01.game.repository.GameRepository;
-import cat.itacademyS5_01.gameplay.service.GamePlayService;import org.springframework.web.bind.annotation.PostMapping;import org.springframework.web.bind.annotation.RequestBody;import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;import reactor.core.publisher.Mono;
+import cat.itacademyS5_01.game.dto.GameRequest;
+import cat.itacademyS5_01.game.dto.GameResponse;
+import cat.itacademyS5_01.gameplay.service.GamePlayService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/games")
