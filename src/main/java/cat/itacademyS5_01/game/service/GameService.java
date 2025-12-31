@@ -16,7 +16,7 @@ public class GameService {
     }
 
 
-    public Mono<Game> findById(String id) {
+    public Mono<Game> findById(Integer id) {
         return gameRepository.findById(id);
     }
 

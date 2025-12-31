@@ -2,9 +2,11 @@ package cat.itacademyS5_01.player.service;
 
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerRepository;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class PlayerService {
     private final PlayerRepository repository;
 

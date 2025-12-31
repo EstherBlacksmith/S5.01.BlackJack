@@ -5,8 +5,10 @@ import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.player.service.PlayerService;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+@Service
 public class GamePlayService {
     private final PlayerService playerService;
     private final GameService gameService;
