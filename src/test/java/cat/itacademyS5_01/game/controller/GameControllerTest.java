@@ -3,7 +3,6 @@ package cat.itacademyS5_01.game.controller;
 import cat.itacademyS5_01.game.dto.GameRequest;
 import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.gameplay.service.GamePlayService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest(controllers = GameController.class)
-
 class GameControllerTest {
     @Autowired
     private WebTestClient webTestClient;

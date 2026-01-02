@@ -21,10 +21,10 @@ public class GameController {
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<GameResponse> startNewGame(@RequestBody GameRequest gameRequest) {
-        if(gameRequest.playerName().isEmpty()){
+        if (gameRequest.playerName().isEmpty()) {
             throw new MissingNameException("Missing name");
         }
 
-        return gamePlayService.startGame(gameRequest) ;
+        return gamePlayService.startGame(gameRequest);
     }
 }

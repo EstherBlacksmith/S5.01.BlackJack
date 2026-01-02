@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = BlackjackApplication.class)
 class BlackjackApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
