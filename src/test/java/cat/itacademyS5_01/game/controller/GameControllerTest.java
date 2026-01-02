@@ -51,7 +51,7 @@ class GameControllerTest {
 
     @Test
     @DisplayName("Returns bad request if the player name is not in the request")
-    void startNewGame_Returns400IfNotCreatedBecausePayerNameMissing() {
+    void startNewGame_Returns400IfNotCreatedBecausePlayerNameMissing() {
 
         GameRequest missingNameRequest = new GameRequest("");
 
