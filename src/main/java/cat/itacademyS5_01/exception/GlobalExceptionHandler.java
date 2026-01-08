@@ -17,4 +17,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleMissingNameException(MissingNameException ex) {
         return new ResponseEntity<>("Missing name: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PlayerAlreadyExists.class)
+    public ResponseEntity<String> handlePlayerAlreadyExistsYException(PlayerAlreadyExists ex) {
+        return new ResponseEntity<>("Player already exists with that name: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
 }

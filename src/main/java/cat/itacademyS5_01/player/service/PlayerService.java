@@ -1,5 +1,7 @@
 package cat.itacademyS5_01.player.service;
 
+import cat.itacademyS5_01.exception.MissingNameException;
+import cat.itacademyS5_01.exception.PlayerAlreadyExists;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,12 @@ public class PlayerService {
     }
 
     public Mono<Player> create(String name) {
-        Player player = new Player(name);
-        return repository.save(player);
+        if (name == null || name.trim().isEmpty()) {
+            return Mono.error(new MissingNameException("Name cannot be empty"));
+        }
+        return repository.findByName(name)
+                .<Player>flatMap(existingPlayer -> Mono.error(new PlayerAlreadyExists("Player already exists with name: " + name)))
+                .switchIfEmpty(repository.save(new Player(name)));
     }
 
     public Mono<Player> getById(int id) {
@@ -24,7 +30,11 @@ public class PlayerService {
     }
 
     public Mono<Player> findByName(String name) {
-        return repository.findByName(name);
+        if (name == null || name.trim().isEmpty()) {
+            return Mono.error(new MissingNameException("Missing name"));
+        }
+        return repository.findByName(name)
+                .switchIfEmpty(Mono.error(new RuntimeException("Player not found with name: " + name)));
     }
 
     public Flux<Player> getAll() {
