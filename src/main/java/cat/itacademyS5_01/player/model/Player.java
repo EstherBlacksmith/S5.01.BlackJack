@@ -2,10 +2,10 @@ package cat.itacademyS5_01.player.model;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
-@Table(schema = "player")
+@Document(collection = "players")
 public class Player {
 
     private final String name;
