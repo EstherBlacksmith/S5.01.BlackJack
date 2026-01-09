@@ -9,3 +9,17 @@ services:
       MONGO_INITDB_DATABASE: blackjack
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
+
+  blackjack-mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: blackjack
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
