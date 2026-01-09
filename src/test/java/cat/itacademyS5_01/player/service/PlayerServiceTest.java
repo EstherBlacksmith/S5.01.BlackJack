@@ -3,7 +3,7 @@ package cat.itacademyS5_01.player.service;
 import cat.itacademyS5_01.exception.MissingNameException;
 import cat.itacademyS5_01.exception.PlayerAlreadyExists;
 import cat.itacademyS5_01.player.model.Player;
-import cat.itacademyS5_01.player.repository.PlayerRepository;
+import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class PlayerServiceTest {
 
     @Mock
-    private PlayerRepository playerRepository;
+    private PlayerReactiveRepository playerRepository;
 
     @Test
     void givenExistingName_whenFindByName_thenReturnPlayer() {
