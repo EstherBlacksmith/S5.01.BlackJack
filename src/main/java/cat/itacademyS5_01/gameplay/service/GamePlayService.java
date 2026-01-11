@@ -24,7 +24,7 @@ public class GamePlayService {
         return playerService.findByName(playerName)
                 .switchIfEmpty(playerService.create(playerName))
                 .flatMap(player -> {
-                    Game game = new Game(player.getName());
+                    Game game = new Game(playerName);
                     return gameService.save(game);
                 })
                 .map(game -> new GameResponse(

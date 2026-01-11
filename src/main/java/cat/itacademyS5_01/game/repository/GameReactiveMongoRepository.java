@@ -7,9 +7,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface GameReactiveMongoRepository extends ReactiveMongoRepository<Game, Integer> {
+public interface GameReactiveMongoRepository extends ReactiveMongoRepository<Game, Long> {
 
     Flux<Game> findAllByPlayerName(String playerName);
-    Mono<Game> findById(Mono <Integer> playerId);
+    Mono<Game> findById(Mono <Long> playerId);
 
 }
