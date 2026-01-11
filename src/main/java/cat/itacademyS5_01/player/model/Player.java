@@ -10,7 +10,7 @@ public class Player {
 
 
     @Id
-    private int id;
+    private Long id;
     private final String name;
 
     public Player(String name) {

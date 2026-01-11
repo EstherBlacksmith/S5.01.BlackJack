@@ -25,7 +25,7 @@ public class PlayerService {
                 .switchIfEmpty(playerReactiveRepository.save(new Player(name)));
     }
 
-    public Mono<Player> getById(int id) {
+    public Mono<Player> getById(Long id) {
         return playerReactiveRepository.findById(id);
     }
 
