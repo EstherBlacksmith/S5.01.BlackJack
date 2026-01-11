@@ -23,5 +23,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Player already exists with that name: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(MissingIdentifierException.class)
+    public ResponseEntity<String> handleMissingIdentifierException(MissingIdentifierException ex) {
+        return new ResponseEntity<>("Missing identifier " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
