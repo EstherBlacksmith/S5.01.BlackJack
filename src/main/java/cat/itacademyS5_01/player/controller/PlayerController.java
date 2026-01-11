@@ -26,4 +26,9 @@ public class PlayerController {
 
         return playerService.create(playerRequest.name());
     }
+
+    @GetMapping("/ping")
+    public Mono<String> ping() {
+        return Mono.just("ok");
+    }
 }
