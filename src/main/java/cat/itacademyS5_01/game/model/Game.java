@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "games")
 public class Game {
     @Id
-    private Long id;
+    private String id;
 
     private int playerScore;
     private int bankScore;

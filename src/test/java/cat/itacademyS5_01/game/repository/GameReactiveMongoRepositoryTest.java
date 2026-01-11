@@ -22,25 +22,25 @@ class GameReactiveMongoRepositoryTest {
     @Test
     public void givenValue_whenFindAllByPlayerName_thenFindAccount() {
         Game game = new Game("Pepe");
-        game.setId(1L);
+        game.setId("1L");
          
         when(gameReactiveMongoRepository.save(any(Game.class))).thenReturn(Mono.just(game));
         when(gameReactiveMongoRepository.findAllByPlayerName("Pepe")).thenReturn(Flux.just(game));
 
-        // Verify save
+
         StepVerifier.create(gameReactiveMongoRepository.save(game))
                 .assertNext(savedGame -> {
                     assertEquals("Pepe", savedGame.getPlayerName());
-                    assertEquals(1L, savedGame.getId());
+                    assertEquals("1L", savedGame.getId());
                 })
                 .expectComplete()
                 .verify();
 
-        // Verify find
+
         StepVerifier.create(gameReactiveMongoRepository.findAllByPlayerName("Pepe"))
                 .assertNext(foundGame -> {
                     assertEquals("Pepe", foundGame.getPlayerName());
-                    assertEquals(1L, foundGame.getId());
+                    assertEquals("1L", foundGame.getId());
                 })
                 .expectComplete()
                 .verify();
