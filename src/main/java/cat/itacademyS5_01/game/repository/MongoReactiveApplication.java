@@ -27,11 +27,11 @@ public class MongoReactiveApplication extends AbstractReactiveMongoConfiguration
     @Value("${spring.data.mongodb.password:admin}")
     private String password;
 
-    @Bean
-    public MongoClient mongoClient() {
+    @Override
+    public MongoClient reactiveMongoClient() {
         String connectionString = String.format(
-            "mongodb://%s:%s@%s:%d/%s?authSource=admin",
-            username, password, host, port, database
+                "mongodb://%s:%s@%s:%d/%s?authSource=admin",
+                username, password, host, port, database
         );
         return MongoClients.create(connectionString);
     }
