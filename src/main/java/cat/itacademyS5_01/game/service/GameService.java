@@ -12,7 +12,7 @@ public class GameService {
     @Autowired
     ReactiveMongoTemplate reactiveMongoTemplate;
 
-    public Mono<Game> findById(int id) {
+    public Mono<Game> findById(String id) {
         return reactiveMongoTemplate.findById(id, Game.class);
     }
 

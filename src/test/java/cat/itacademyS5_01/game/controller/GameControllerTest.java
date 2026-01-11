@@ -28,7 +28,7 @@ class GameControllerTest {
     @BeforeEach
     void setUp() {
         gameRequest = new GameRequest("Alice");
-        gameResponse = new GameResponse(123L, "Alice", 0, 0);
+        gameResponse = new GameResponse("123L", "Alice", 0, 0);
     }
 
     @Test
