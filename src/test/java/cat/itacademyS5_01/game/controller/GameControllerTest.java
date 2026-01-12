@@ -77,29 +77,23 @@ class GameControllerTest {
     }
 
     @Test
-    @DisplayName("Returns 302 FOUND and the game when a valid game ID is provided")
+    @DisplayName("Returns 200 OK and the game when a valid game ID is provided")
     void getGame_Returns302AndGameWhenValidIdProvided() {
-        // Step 1: Create a mock game that will be returned by the service
         Game mockGame = new Game("Alice");
         mockGame.setId("test-game-id-123");
         mockGame.setPlayerScore(15);
         mockGame.setBankScore(12);
 
-        // Step 2: Mock the GameService to return our test game when findById is called
         Mockito.when(gameService.findById("test-game-id-123"))
                 .thenReturn(Mono.just(mockGame));
 
-        // Step 3: Call the GET endpoint with the game ID
         webTestClient.get()
                 .uri("/games/game/{id}", "test-game-id-123")
                 .exchange()
-                // Step 4: Verify the response status is 302 FOUND
-                .expectStatus().isFound()
-                // Step 5: Verify the response body contains the correct game
+                .expectStatus().isOk()
                 .expectBody(Game.class)
                 .consumeWith(response -> {
                     Game returnedGame = response.getResponseBody();
-                    // Verify the game properties match our mock game
                     assert returnedGame != null;
                     assert returnedGame.getId().equals("test-game-id-123");
                     assert returnedGame.getPlayerName().equals("Alice");
@@ -107,10 +101,10 @@ class GameControllerTest {
                     assert returnedGame.getBankScore() == 12;
                 });
     }
+
     @Test
     @DisplayName("Returns 201 if the game is created")
     void getGame_Returns201IfFounded() {
-        // Create a mock Game object instead of using GameResponse
         Game mockGame = new Game("Alice");
         mockGame.setId("123L");
         mockGame.setPlayerScore(0);
