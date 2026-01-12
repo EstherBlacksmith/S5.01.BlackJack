@@ -1,5 +1,6 @@
 package cat.itacademyS5_01.game.service;
 
+import cat.itacademyS5_01.game.dto.MoveRequest;
 import cat.itacademyS5_01.game.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -26,4 +27,7 @@ public class GameService {
         return reactiveMongoTemplate.save(game);
     }
 
+    public void newMove(MoveRequest moveRequest) {
+
+    }
 }

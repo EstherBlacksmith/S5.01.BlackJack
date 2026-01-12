@@ -51,9 +51,6 @@ public class GameController {
             throw new MissingIdentifierException("Missing game identifier");
         }
 
-        if (moveRequest.playerAction().isBlank()) {
-            throw new MissingIdentifierException("Missing game identifier");
-        }
-        return gameService.findById(id);
+        return gamePlayService.makeAMove(moveRequest);
     }
 }
