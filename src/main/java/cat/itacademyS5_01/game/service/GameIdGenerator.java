@@ -1,4 +1,4 @@
-package cat.itacademyS5_01.game.util;
+package cat.itacademyS5_01.game.service;
 
 import java.util.HashSet;
 import java.util.Set;
