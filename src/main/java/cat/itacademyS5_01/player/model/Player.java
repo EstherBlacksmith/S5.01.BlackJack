@@ -7,8 +7,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table("players")
 public class Player {
-
-
     @Getter
     @Setter
     @Id
@@ -18,11 +16,6 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-    }
-
-    // Manual getter for name since Lombok isn't being processed
-    public String getName() {
-        return name;
     }
 
 }
