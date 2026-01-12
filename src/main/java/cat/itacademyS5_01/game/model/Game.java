@@ -1,5 +1,6 @@
 package cat.itacademyS5_01.game.model;
 
+import cat.itacademyS5_01.game.dto.PlayerResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -20,8 +21,19 @@ public class Game {
     private int bankScore;
     @Getter
     @Setter
-
     private String playerName;
+
+    @Getter
+    @Setter
+    private boolean gameEnded;
+
+    @Getter
+    @Setter
+    private String currentPlayerTurn; // "PLAYER" or "BANK"
+
+    @Getter
+    @Setter
+    private PlayerResult result;
 
     public Game() {
     }
@@ -30,6 +42,7 @@ public class Game {
         this.playerName = playerName;
         this.playerScore = 0;
         this.bankScore = 0;
+        this.gameEnded = false;
+        this.currentPlayerTurn = "PLAYER";
     }
-
 }

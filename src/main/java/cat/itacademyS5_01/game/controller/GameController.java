@@ -47,11 +47,11 @@ public class GameController {
 
     @PostMapping("{id}/play")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Game> makeAMove(@PathVariable MoveRequest moveRequest) throws MissingIdentifierException {
+    public Mono<Game> makeMove(@PathVariable MoveRequest moveRequest) throws MissingIdentifierException {
         if (moveRequest.gameId().isBlank()) {
             throw new MissingIdentifierException("Missing game identifier");
         }
 
-        return gamePlayService.makeAMove(moveRequest);
+        return gamePlayService.makeMove(moveRequest);
     }
 }
