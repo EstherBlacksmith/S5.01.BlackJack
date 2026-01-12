@@ -18,6 +18,7 @@ public class GameController {
 
     private final GamePlayService gamePlayService;
     private final GameService gameService;
+
     public GameController(GamePlayService gamePlayService, GameService gameService) {
         this.gamePlayService = gamePlayService;
         this.gameService = gameService;

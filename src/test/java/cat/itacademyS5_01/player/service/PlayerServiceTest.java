@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +46,7 @@ class PlayerServiceTest {
         StepVerifier.create(playerService.findByName(nonExistingName))
                 .expectErrorMatches(throwable ->
                         throwable instanceof RuntimeException &&
-                        throwable.getMessage().contains("Player not found with name: " + nonExistingName))
+                                throwable.getMessage().contains("Player not found with name: " + nonExistingName))
                 .verify();
     }
 

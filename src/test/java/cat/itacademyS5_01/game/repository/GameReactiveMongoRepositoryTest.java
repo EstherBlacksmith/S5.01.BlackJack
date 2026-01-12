@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +23,7 @@ class GameReactiveMongoRepositoryTest {
     public void givenValue_whenFindAllByPlayerName_thenFindAccount() {
         Game game = new Game("Pepe");
         game.setId("1L");
-         
+
         when(gameReactiveMongoRepository.save(any(Game.class))).thenReturn(Mono.just(game));
         when(gameReactiveMongoRepository.findAllByPlayerName("Pepe")).thenReturn(Flux.just(game));
 

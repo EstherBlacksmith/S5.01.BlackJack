@@ -27,15 +27,15 @@ This guide shows how to use Postman to retrieve an existing game from the Blackj
 
 1. **Request Method**: Select `GET` from the dropdown
 2. **Request URL**: Enter `http://localhost:8080/games/game/{id}`
-   - Replace `{id}` with the actual ID of an existing game from MongoDB
-   - Example: `http://localhost:8080/games/game/abc123-def456-ghi789`
+    - Replace `{id}` with the actual ID of an existing game from MongoDB
+    - Example: `http://localhost:8080/games/game/abc123-def456-ghi789`
 
 ### Step 3: Set Headers (Optional)
 
 1. Click on the "Headers" tab
 2. Add the following header:
-   - **Key**: `Content-Type`
-   - **Value**: `application/json`
+    - **Key**: `Content-Type`
+    - **Value**: `application/json`
 
 ### Step 4: Send the Request
 
@@ -45,6 +45,7 @@ This guide shows how to use Postman to retrieve an existing game from the Blackj
 ### Step 5: Analyze the Response
 
 **Successful Response (HTTP 200 OK):**
+
 ```json
 {
   "id": "abc123-def456-ghi789",
@@ -55,6 +56,7 @@ This guide shows how to use Postman to retrieve an existing game from the Blackj
 ```
 
 **Error Response (HTTP 400 Bad Request) - Missing ID:**
+
 ```json
 {
   "error": "Missing game identifier",
@@ -63,6 +65,7 @@ This guide shows how to use Postman to retrieve an existing game from the Blackj
 ```
 
 **Error Response (HTTP 404 Not Found) - Game doesn't exist in MongoDB:**
+
 ```json
 {
   "error": "Game not found",
@@ -73,11 +76,13 @@ This guide shows how to use Postman to retrieve an existing game from the Blackj
 ## Complete Example
 
 **Request:**
+
 - Method: GET
 - URL: `http://localhost:8080/games/game/abc123-def456-ghi789`
 - Headers: `Content-Type: application/json`
 
 **Successful Response:**
+
 ```json
 {
   "id": "abc123-def456-ghi789",
