@@ -27,4 +27,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleMissingIdentifierException(MissingIdentifierException ex) {
         return new ResponseEntity<>("Missing identifier " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InvalidMovementException.class)
+    public ResponseEntity<String> handleInvalidMovementException(InvalidMovementException ex) {
+        return new ResponseEntity<>("Invalid action " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

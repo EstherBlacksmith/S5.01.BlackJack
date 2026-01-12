@@ -4,6 +4,7 @@ import cat.itacademyS5_01.exception.MissingIdentifierException;
 import cat.itacademyS5_01.exception.MissingNameException;
 import cat.itacademyS5_01.game.dto.GameRequest;
 import cat.itacademyS5_01.game.dto.GameResponse;
+import cat.itacademyS5_01.game.dto.MoveRequest;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.gameplay.service.GamePlayService;
@@ -45,11 +46,14 @@ public class GameController {
 
     @PostMapping("{id}/play")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Game> makeAMove(@PathVariable String id) throws MissingIdentifierException {
-        if (id.isBlank()) {
+    public Mono<Game> makeAMove(@PathVariable MoveRequest moveRequest) throws MissingIdentifierException {
+        if (moveRequest.gameId().isBlank()) {
             throw new MissingIdentifierException("Missing game identifier");
         }
 
+        if (moveRequest.playerAction().isBlank()) {
+            throw new MissingIdentifierException("Missing game identifier");
+        }
         return gameService.findById(id);
     }
 }
