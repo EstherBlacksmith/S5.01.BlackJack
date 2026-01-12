@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.player.dto;
 
 public record PlayerResponse(
-        int id,
+        Long id,
         String name
 ) {
 }
