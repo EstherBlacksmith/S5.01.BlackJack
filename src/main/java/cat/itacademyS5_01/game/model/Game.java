@@ -1,20 +1,31 @@
 package cat.itacademyS5_01.game.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@NoArgsConstructor
-@Data
 @Document(collection = "games")
 public class Game {
+    // Manual getter and setter to ensure they exist even if Lombok doesn't process
+    @Setter
+    @Getter
     @Id
     private String id;
 
+    @Getter
+    @Setter
     private int playerScore;
+    @Getter
+    @Setter
     private int bankScore;
+    @Getter
+    @Setter
+
     private String playerName;
+
+    public Game() {
+    }
 
     public Game(String playerName) {
         this.playerName = playerName;
