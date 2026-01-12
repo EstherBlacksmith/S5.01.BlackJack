@@ -32,11 +32,20 @@ public class GameController {
         return gamePlayService.startGame(gameRequest);
     }
 
-
-
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<Game> getGame(@PathVariable String id) throws MissingIdentifierException {
+        if (id.isBlank()) {
+            throw new MissingIdentifierException("Missing game identifier");
+        }
+
+        return gameService.findById(id);
+    }
+
+
+    @PostMapping("{id}/play")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Game> makeAMove(@PathVariable String id) throws MissingIdentifierException {
         if (id.isBlank()) {
             throw new MissingIdentifierException("Missing game identifier");
         }
