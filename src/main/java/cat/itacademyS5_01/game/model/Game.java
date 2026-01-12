@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "games")
 public class Game {
-    // Manual getter and setter to ensure they exist even if Lombok doesn't process
     @Setter
     @Getter
     @Id

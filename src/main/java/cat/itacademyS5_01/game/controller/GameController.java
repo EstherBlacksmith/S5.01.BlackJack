@@ -34,8 +34,8 @@ public class GameController {
 
 
 
-    @GetMapping("/game/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Game> getGame(@PathVariable String id) throws MissingIdentifierException {
         if (id.isBlank()) {
             throw new MissingIdentifierException("Missing game identifier");
