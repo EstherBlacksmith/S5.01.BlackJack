@@ -34,13 +34,13 @@ public class GameController {
 
 
 
-    @GetMapping("/new")
+    @GetMapping("/game/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public Mono<Game> getGame(@RequestBody String gameId) throws MissingIdentifierException {
-        if (gameId.isEmpty()) {
+    public Mono<Game> getGame(@PathVariable String id) throws MissingIdentifierException {
+        if (id.isBlank()) {
             throw new MissingIdentifierException("Missing game identifier");
         }
 
-        return gameService.findById(gameId);
+        return gameService.findById(id);
     }
 }
