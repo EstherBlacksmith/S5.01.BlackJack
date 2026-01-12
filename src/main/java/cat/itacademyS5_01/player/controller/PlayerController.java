@@ -20,7 +20,7 @@ public class PlayerController {
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Player> newPlayer(@RequestBody PlayerRequest playerRequest) {
-        if (playerRequest.name().isEmpty()) {
+        if (playerRequest.name() == null || playerRequest.name().isEmpty()) {
             throw new MissingNameException("Missing name");
         }
 

@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Missing name: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PlayerAlreadyExists.class)
-    public ResponseEntity<String> handlePlayerAlreadyExistsYException(PlayerAlreadyExists ex) {
+    @ExceptionHandler(PlayerAlreadyExistsException.class)
+    public ResponseEntity<String> handlePlayerAlreadyExistsYException(PlayerAlreadyExistsException ex) {
         return new ResponseEntity<>("Player already exists with that name: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

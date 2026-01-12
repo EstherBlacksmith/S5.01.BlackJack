@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.player.service;
 
 import cat.itacademyS5_01.exception.MissingNameException;
-import cat.itacademyS5_01.exception.PlayerAlreadyExists;
+import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class PlayerService {
             return Mono.error(new MissingNameException("Name cannot be empty"));
         }
         return playerReactiveRepository.findByName(name)
-                .<Player>flatMap(existingPlayer -> Mono.error(new PlayerAlreadyExists("Player already exists with name: " + name)))
+                .<Player>flatMap(existingPlayer -> Mono.error(new PlayerAlreadyExistsException("Player already exists with name: " + name)))
                 .switchIfEmpty(playerReactiveRepository.save(new Player(name)));
     }
 

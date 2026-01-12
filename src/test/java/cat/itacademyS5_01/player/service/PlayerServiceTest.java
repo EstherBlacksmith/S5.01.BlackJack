@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.player.service;
 
 import cat.itacademyS5_01.exception.MissingNameException;
-import cat.itacademyS5_01.exception.PlayerAlreadyExists;
+import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,7 @@ class PlayerServiceTest {
 
         StepVerifier.create(playerService.create(existingName))
                 .expectErrorMatches(throwable ->
-                        throwable instanceof PlayerAlreadyExists &&
+                        throwable instanceof PlayerAlreadyExistsException &&
                                 throwable.getMessage().contains("Player already exists with name: " + existingName))
                 .verify();
     }

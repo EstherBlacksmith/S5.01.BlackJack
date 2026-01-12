@@ -71,7 +71,7 @@ class GameControllerTest {
     void getGame_Returns400IfNotCreatedBecauseGameIdIsMissing() {
 
         webTestClient.get()
-                .uri("/games/game/{id}", " ")
+                .uri("/games/{id}", " ")
                 .exchange()
                 .expectStatus().isBadRequest();
     }
@@ -88,7 +88,7 @@ class GameControllerTest {
                 .thenReturn(Mono.just(mockGame));
 
         webTestClient.get()
-                .uri("/games/game/{id}", "test-game-id-123")
+                .uri("/games/{id}", "test-game-id-123")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Game.class)
@@ -106,12 +106,12 @@ class GameControllerTest {
     @DisplayName("Returns 201 if the game is created")
     void getGame_Returns201IfFounded() {
         Game mockGame = new Game("Alice");
-        mockGame.setId("123L");
+        mockGame.setId("1");
         mockGame.setPlayerScore(0);
         mockGame.setBankScore(0);
 
-        Mockito.when(gameService.findById(Mockito.any(String.class)))
-                .thenReturn(Mono.just(mockGame));
+        Mockito.when(gamePlayService.startGame(Mockito.any(GameRequest.class)))
+                .thenReturn(Mono.just(new GameResponse("1", "Alice", 0, 0)));
 
         webTestClient.post()
                 .uri("/games/new")
@@ -120,7 +120,7 @@ class GameControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(GameResponse.class)
-                .isEqualTo(gameResponse);
+                .isEqualTo(new GameResponse("1", "Alice", 0, 0));
     }
 
 }
