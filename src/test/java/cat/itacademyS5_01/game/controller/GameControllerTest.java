@@ -3,6 +3,7 @@ package cat.itacademyS5_01.game.controller;
 import cat.itacademyS5_01.game.dto.GameRequest;
 import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.model.Game;
+import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.gameplay.service.GamePlayService;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,7 +85,7 @@ class GameControllerTest {
         mockGame.setPlayerScore(15);
         mockGame.setBankScore(12);
 
-        Mockito.when(gameService.findById("test-game-id-123"))
+        Mockito.when(gameService.findById(new GameId("test-game-id-123")))
                 .thenReturn(Mono.just(mockGame));
 
         webTestClient.get()
