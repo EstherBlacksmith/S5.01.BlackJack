@@ -2,6 +2,7 @@ package cat.itacademyS5_01.game.service;
 
 import cat.itacademyS5_01.game.dto.MoveRequest;
 import cat.itacademyS5_01.game.model.Game;
+import cat.itacademyS5_01.game.model.GameId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,8 @@ public class GameService {
     @Autowired
     ReactiveMongoTemplate reactiveMongoTemplate;
 
-    public Mono<Game> findById(String id) {
-        return reactiveMongoTemplate.findById(id, Game.class);
+    public Mono<Game> findById(GameId gameId) {
+        return reactiveMongoTemplate.findById(gameId, Game.class);
     }
 
     public Flux<Game> findAll() {
@@ -27,7 +28,10 @@ public class GameService {
         return reactiveMongoTemplate.save(game);
     }
 
-    public void newMove(MoveRequest moveRequest) {
-
+    public void newMove(GameId gameId,MoveRequest moveRequest) {
+        return reactiveMongoTemplate.findById(gameId, Game.class)
+                .flatMap(game -> {
+                    // Lógica para procesar el movimiento
+                });
     }
 }
