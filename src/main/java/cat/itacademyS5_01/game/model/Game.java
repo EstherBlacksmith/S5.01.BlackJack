@@ -1,5 +1,6 @@
 package cat.itacademyS5_01.game.model;
 
+import cat.itacademyS5_01.game.dto.PlayerResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -32,4 +33,6 @@ public class Game {
         this.bankScore = 0;
     }
 
+    public void setResult(PlayerResult result) {
+    }
 }

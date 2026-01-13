@@ -32,5 +32,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidMovementException(InvalidMovementException ex) {
         return new ResponseEntity<>("Invalid action " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(InvalidWagerException.class)
+    public ResponseEntity<String> handleInvalidWagerException(InvalidWagerException ex) {
+        return new ResponseEntity<>("The minimum wager is 10€" + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
 }

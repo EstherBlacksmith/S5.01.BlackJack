@@ -4,8 +4,10 @@ import cat.itacademyS5_01.exception.InvalidMovementException;
 import cat.itacademyS5_01.game.dto.GameRequest;
 import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.dto.MoveRequest;
+import cat.itacademyS5_01.game.dto.PlayerResult;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.model.GameId;
+import cat.itacademyS5_01.game.model.Wager;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.player.service.PlayerService;
 import jakarta.validation.constraints.Min;
@@ -50,24 +52,69 @@ public class GamePlayService {
                             return handleStandAction(game);
                         case DOUBLE_DOWN:
                             return handleDoubleDownAction(game, moveRequest.wager());
-                        case SPLIT:
-                            return handleSplitAction(game, moveRequest.wager());
                         default:
                             return Mono.error(new InvalidMovementException("Invalid player action: " + moveRequest.playerAction()));
                     }
                 });
     }
 
-    private Mono<? extends Game> handleSplitAction(Game game, @Min(value = 10, message = "The minimum wager is 10€") int wager) {
-    }
+    private Mono<? extends Game> handleDoubleDownAction(Game game, Wager wager) {
+        game.setPlayerScore(game.getPlayerScore() + drawCard());
 
-    private Mono<? extends Game> handleDoubleDownAction(Game game, @Min(value = 10, message = "The minimum wager is 10€") int wager) {
+        if (game.getPlayerScore() > 21) {
+            game.setPlayerScore(0);
+        }
+        return gameService.save(game);
     }
 
     private Mono<? extends Game> handleStandAction(Game game) {
+        while (game.getBankScore() < 17) {
+            int newCard = drawCard();
+            game.setBankScore(game.getBankScore() + newCard);
+        }
+
+        determineWinner(game);
+
+        return gameService.save(game);
     }
 
-    private Mono<? extends Game> handleHitAction(Game game, @Min(value = 10, message = "The minimum wager is 10€") int wager) {
+
+    private Mono<? extends Game> handleHitAction(Game game,  Wager wager) {
+
+        int newCard = drawCard();
+        game.setPlayerScore(game.getPlayerScore() + newCard);
+
+        if (game.getPlayerScore() > 21) {
+            game.setPlayerScore(0);
+        }
+
+        return gameService.save(game);
+    }
+
+    private int drawCard() {
+        return (int) (Math.random() * 11) + 1;
+    }
+
+    private void determineWinner(Game game) {
+        int playerScore = game.getPlayerScore();
+        int bankScore = game.getBankScore();
+
+        if (playerScore > 21) {
+            game.setResult(PlayerResult.LOSE);
+            game.setPlayerScore(0);
+        } else if (bankScore > 21) {
+            game.setResult(PlayerResult.WIN);
+        } else if (playerScore > bankScore) {
+            game.setPlayerScore(1);
+            game.setResult(PlayerResult.WIN);
+        } else if (bankScore > playerScore) {
+            game.setPlayerScore(0);
+            game.setResult(PlayerResult.LOSE);
+        } else {
+            // Empate
+             game.setResult(PlayerResult.TIE);
+        }
+//TODO:implement logic to increment the wins in the scores
     }
 
 }
