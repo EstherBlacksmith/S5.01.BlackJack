@@ -7,5 +7,8 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface PlayerReactiveRepository extends ReactiveCrudRepository<Player, Long> {
+    Mono<Player> findById(String id);
     Mono<Player> findByName(String name);
+    Mono<Player> save(Player player);
+    Mono<Player> deleteById(String id);
 }
