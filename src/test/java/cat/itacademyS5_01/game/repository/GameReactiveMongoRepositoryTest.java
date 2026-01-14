@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class GameReactiveMongoRepositoryTest {
 
     @Mock
-    private GameReactiveMongoRepository gameReactiveMongoRepository;
+    private GameRepository gameReactiveMongoRepository;
 
     @Test
     public void givenValue_whenFindAllByPlayerName_thenFindAccount() {

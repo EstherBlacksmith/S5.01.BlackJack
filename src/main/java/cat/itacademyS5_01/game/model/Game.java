@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "games")
 public class Game {
 
+    @Setter
     @Getter
     @Id
     private String id;
