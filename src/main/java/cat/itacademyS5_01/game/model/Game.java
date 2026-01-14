@@ -38,6 +38,10 @@ public class Game {
     @Getter
     @Setter
     private PlayerResult result;
+    
+    @Getter
+    @Setter
+    private boolean gameOver;
 
     public Game() {}
 
@@ -82,4 +86,16 @@ public class Game {
         this.gamesWon++;
     }
 
+    public int getPlayerScore() {
+        return currentPlayerScore;
+    }
+
+    public void doublePlayerWager() {
+    }
+
+    public void addCardToPlayer(int newCard) {
+    }
+
+    public void setWinner(String dealer) {
+    }
 }
