@@ -8,20 +8,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "games")
 public class Game {
-    @Setter
+
     @Getter
     @Id
     private String id;
 
     @Getter
-    @Setter
-    private int playerScore;
-    @Getter
-    @Setter
-    private int bankScore;
-    @Getter
-    @Setter
+    private int gamesWon;
 
+    @Getter
+    private int gamesLost;
+
+    @Getter
+    private int gamesTied;
+
+    @Getter
+    @Setter
     private String playerName;
 
     public Game() {
@@ -29,10 +31,16 @@ public class Game {
 
     public Game(String playerName) {
         this.playerName = playerName;
-        this.playerScore = 0;
-        this.bankScore = 0;
+        this.gamesWon = 0;
+        this.gamesLost = 0;
+        this.gamesTied = 0;
     }
 
     public void setResult(PlayerResult result) {
+        PlayerResult.TIE
+                PlayerResult.LOSE
+                        PlayerResult.WIN
+                                PlayerResult.BLACKJACK
+                                        PlayerResult.PUSH
     }
 }

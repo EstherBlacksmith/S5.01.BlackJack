@@ -5,7 +5,7 @@ import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
-import cat.itacademyS5_01.gameplay.service.GamePlayService;
+import cat.itacademyS5_01.betting.service.BettingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class GameControllerTest {
     private WebTestClient webTestClient;
 
     @MockBean
-    private GamePlayService gamePlayService;
+    private BettingService bettingService;
 
     @MockBean
     private GameService gameService;
@@ -40,7 +40,7 @@ class GameControllerTest {
     @Test
     @DisplayName("Returns 201 if the game is created")
     void startNewGame_Returns201IfCreated() {
-        Mockito.when(gamePlayService.startGame(Mockito.any(GameRequest.class)))
+        Mockito.when(bettingService.startGame(Mockito.any(GameRequest.class)))
                 .thenReturn(Mono.just(gameResponse));
 
         webTestClient.post()
@@ -82,8 +82,8 @@ class GameControllerTest {
     void getGame_Returns302AndGameWhenValidIdProvided() {
         Game mockGame = new Game("Alice");
         mockGame.setId("test-game-id-123");
-        mockGame.setPlayerScore(15);
-        mockGame.setBankScore(12);
+        mockGame.setGamesWon(15);
+        mockGame.setGamesLost(12);
 
         Mockito.when(gameService.findById(new GameId("test-game-id-123")))
                 .thenReturn(Mono.just(mockGame));
@@ -98,8 +98,8 @@ class GameControllerTest {
                     assert returnedGame != null;
                     assert returnedGame.getId().equals("test-game-id-123");
                     assert returnedGame.getPlayerName().equals("Alice");
-                    assert returnedGame.getPlayerScore() == 15;
-                    assert returnedGame.getBankScore() == 12;
+                    assert returnedGame.getGamesWon() == 15;
+                    assert returnedGame.getGamesLost() == 12;
                 });
     }
 
@@ -108,10 +108,10 @@ class GameControllerTest {
     void getGame_Returns201IfFounded() {
         Game mockGame = new Game("Alice");
         mockGame.setId("1");
-        mockGame.setPlayerScore(0);
-        mockGame.setBankScore(0);
+        mockGame.setGamesWon(0);
+        mockGame.setGamesLost(0);
 
-        Mockito.when(gamePlayService.startGame(Mockito.any(GameRequest.class)))
+        Mockito.when(bettingService.startGame(Mockito.any(GameRequest.class)))
                 .thenReturn(Mono.just(new GameResponse("1", "Alice", 0, 0)));
 
         webTestClient.post()

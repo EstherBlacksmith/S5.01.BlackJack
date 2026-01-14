@@ -8,7 +8,7 @@ import cat.itacademyS5_01.game.dto.MoveRequest;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
-import cat.itacademyS5_01.gameplay.service.GamePlayService;
+import cat.itacademyS5_01.betting.service.BettingService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +18,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/games")
 public class GameController {
 
-    private final GamePlayService gamePlayService;
+    private final BettingService bettingService;
     private final GameService gameService;
 
-    public GameController(GamePlayService gamePlayService, GameService gameService) {
-        this.gamePlayService = gamePlayService;
+    public GameController(BettingService bettingService, GameService gameService) {
+        this.bettingService = bettingService;
         this.gameService = gameService;
     }
 
@@ -33,7 +33,7 @@ public class GameController {
             throw new MissingNameException("Missing name");
         }
 
-        return gamePlayService.startGame(gameRequest);
+        return bettingService.startGame(gameRequest);
     }
 
     @GetMapping("{id}")
@@ -50,6 +50,6 @@ public class GameController {
     public Mono<Game> makeMove(@PathVariable String gameId, @Valid @RequestBody  MoveRequest moveRequest) throws MissingIdentifierException {
         GameId validatedGameId = new GameId(gameId);
 
-        return gamePlayService.makeMove(validatedGameId,moveRequest);
+        return bettingService.makeMove(validatedGameId,moveRequest);
     }
 }
