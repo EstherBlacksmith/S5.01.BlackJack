@@ -14,6 +14,10 @@ public class Game {
     private String id;
 
     @Getter
+    @Setter
+    private String playerName;
+
+    @Getter
     private int gamesWon;
 
     @Getter
@@ -24,23 +28,57 @@ public class Game {
 
     @Getter
     @Setter
-    private String playerName;
+    private int currentPlayerScore;
 
-    public Game() {
-    }
+    @Getter
+    @Setter
+    private int currentBankScore;
+
+    @Getter
+    @Setter
+    private PlayerResult result;
+
+    public Game() {}
 
     public Game(String playerName) {
         this.playerName = playerName;
         this.gamesWon = 0;
         this.gamesLost = 0;
         this.gamesTied = 0;
+        this.currentPlayerScore = 0;
+        this.currentBankScore = 0;
     }
 
-    public void setResult(PlayerResult result) {
-        PlayerResult.TIE
-                PlayerResult.LOSE
-                        PlayerResult.WIN
-                                PlayerResult.BLACKJACK
-                                        PlayerResult.PUSH
+    public void determineWinner() {
+        if (currentPlayerScore > 21) {
+            setResult(PlayerResult.LOSE);
+            incrementGameLost();
+        } else if (currentBankScore > 21) {
+            setResult(PlayerResult.WIN);
+            incrementGameWon();
+        } else if (currentPlayerScore > currentBankScore) {
+            setResult(PlayerResult.WIN);
+            incrementGameWon();
+        } else if (currentBankScore > currentPlayerScore) {
+            setResult(PlayerResult.LOSE);
+            incrementGameLost();
+        } else {
+            setResult(PlayerResult.TIE);
+            incrementGamesTied();
+        }
     }
+
+    private void incrementGamesTied() {
+        this.gamesTied++;
+    }
+
+    private void incrementGameLost() {
+        this.gamesLost++;
+    }
+
+
+    private void incrementGameWon() {
+        this.gamesWon++;
+    }
+
 }

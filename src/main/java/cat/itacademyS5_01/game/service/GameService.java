@@ -49,26 +49,6 @@ public class GameService {
                     // Lógica para procesar el movimiento
                 });
     }
-    private void determineWinner(Game game) {
-        int playerScore = game.getGamesWon();
-        int bankScore = game.getGamesLost();
 
-        if (playerScore > 21) {
-            game.setResult(PlayerResult.LOSE);
-            game.setGamesWon(0);
-        } else if (bankScore > 21) {
-            game.setResult(PlayerResult.WIN);
-        } else if (playerScore > bankScore) {
-            game.setGamesWon(1);
-            game.setResult(PlayerResult.WIN);
-        } else if (bankScore > playerScore) {
-            game.setGamesWon(0);
-            game.setResult(PlayerResult.LOSE);
-        } else {
-            // Empate
-            game.setResult(PlayerResult.TIE);
-        }
-//TODO:implement logic to increment the wins in the scores
-    }
 
 }

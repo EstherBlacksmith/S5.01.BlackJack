@@ -4,12 +4,8 @@ import cat.itacademyS5_01.exception.InvalidMovementException;
 import cat.itacademyS5_01.game.dto.*;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.model.GameId;
-import cat.itacademyS5_01.game.model.Wager;
 import cat.itacademyS5_01.game.service.GameService;
-import cat.itacademyS5_01.game.strategy.DoubleDownStrategy;
-import cat.itacademyS5_01.game.strategy.HitStrategy;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
-import cat.itacademyS5_01.game.strategy.StandStrategy;
 import cat.itacademyS5_01.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -25,9 +21,7 @@ public class BettingService {
     public BettingService(PlayerService playerService, GameService gameService, Map<PlayerAction, PlayerActionStrategy> strategies) {
         this.playerService = playerService;
         this.gameService = gameService;
-        this.strategies = Map.of(PlayerAction.HIT,new HitStrategy(gameService),
-                PlayerAction.STAND,new StandStrategy(gameService),
-                PlayerAction.DOUBLE_DOWN,new DoubleDownStrategy(gameService));
+        this.strategies = strategies;
     }
 
     public Mono<GameResponse> startGame(GameRequest gameRequest) {
@@ -51,19 +45,11 @@ public class BettingService {
         return gameService.findById(gameId)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("Game not found with ID: " + gameId.value())))
                 .flatMap(game -> {
-                   PlayerActionStrategy playerActionStrategy = strategies.get(moveRequest.playerAction());
-                   if (playerActionStrategy == null){
-                       return Mono.error(new InvalidMovementException("Invalid player action: " + moveRequest.playerAction()))
+                    PlayerActionStrategy playerActionStrategy = strategies.get(moveRequest.playerAction());
+                    if (playerActionStrategy == null) {
+                        return Mono.error(new InvalidMovementException("Invalid player action: " + moveRequest.playerAction()));
                     }
-                   return playerActionStrategy.execute(game,moveRequest.wager());
+                    return playerActionStrategy.execute(game, moveRequest.wager());
                 });
     }
-
-
-
-    private int drawCard() {
-        return (int) (Math.random() * 11) + 1;
-    }
-
-
 }
