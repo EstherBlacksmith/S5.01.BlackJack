@@ -6,26 +6,19 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
+
 @Document(collection = "games")
 public class Game {
 
     @Setter
     @Getter
     @Id
-    private String id;
+    private UUID id;
 
     @Getter
     @Setter
     private String playerName;
-
-    @Getter
-    private int gamesWon;
-
-    @Getter
-    private int gamesLost;
-
-    @Getter
-    private int gamesTied;
 
     @Getter
     @Setter
@@ -43,13 +36,17 @@ public class Game {
     @Setter
     private boolean gameOver;
 
-    public Game() {}
+    @Setter
+    private String winner;
+
+
+    public Game() {
+        this.id = UUID.randomUUID();
+    }
 
     public Game(String playerName) {
+        this.id = UUID.randomUUID();
         this.playerName = playerName;
-        this.gamesWon = 0;
-        this.gamesLost = 0;
-        this.gamesTied = 0;
         this.currentPlayerScore = 0;
         this.currentBankScore = 0;
     }
@@ -73,18 +70,7 @@ public class Game {
         }
     }
 
-    private void incrementGamesTied() {
-        this.gamesTied++;
-    }
 
-    private void incrementGameLost() {
-        this.gamesLost++;
-    }
-
-
-    private void incrementGameWon() {
-        this.gamesWon++;
-    }
 
     public int getPlayerScore() {
         return currentPlayerScore;
@@ -96,6 +82,6 @@ public class Game {
     public void addCardToPlayer(int newCard) {
     }
 
-    public void setWinner(String dealer) {
-    }
+
 }
+
