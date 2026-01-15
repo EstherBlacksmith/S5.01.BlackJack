@@ -36,8 +36,8 @@ public class BettingService {
                 .map(game -> new GameResponse(
                         game.getId(),
                         game.getPlayerName(),
-                        game.getGamesWon(),
-                        game.getGamesLost()
+                        game.getCurrentPlayerScore(),
+                        game.getCurrentBankScore()
                 ));
     }
 
