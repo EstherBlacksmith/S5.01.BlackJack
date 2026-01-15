@@ -1,6 +1,7 @@
 package cat.itacademyS5_01.game.model;
 
 import cat.itacademyS5_01.game.dto.PlayerResult;
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.service.PlayerStatsService;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class Game {
 
     @Getter
     @Setter
-    private String playerName;
+    private Name playerName;
 
     @Getter
     @Setter
@@ -46,7 +47,7 @@ public class Game {
         this.id = UUID.randomUUID();
     }
 
-    public Game(String playerName) {
+    public Game(Name playerName) {
         this.id = UUID.randomUUID();
         this.playerName = playerName;
         this.currentPlayerScore = 0;

@@ -2,10 +2,10 @@ package cat.itacademyS5_01.player.controller;
 
 import cat.itacademyS5_01.exception.MissingIdentifierException;
 import cat.itacademyS5_01.exception.MissingNameException;
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.dto.PlayerRequest;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.service.PlayerService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -23,14 +23,17 @@ public class PlayerController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Player> newPlayer( @Valid @RequestBody PlayerRequest playerRequest) {
+    public Mono<Player> newPlayer(@RequestBody PlayerRequest playerRequest) {
+
         return playerService.create(playerRequest.name());
     }
 
     @GetMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> getPlayer( @Valid @PathVariable String playerId) throws MissingIdentifierException {
-
+    public Mono<Player> getPlayer(@PathVariable String playerId) throws MissingIdentifierException {
+        if (playerId == null || playerId.isEmpty()) {
+            throw new MissingIdentifierException("Missing identification");
+        }
         UUID id = UUID.fromString(playerId);
 
         return playerService.getById(id);
@@ -38,8 +41,11 @@ public class PlayerController {
 
     @PutMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> updatePlayerName( @Valid @PathVariable String playerId,
-                                          @Valid @RequestBody String newPlayerName) throws MissingIdentifierException {
+    public Mono<Player> updatePlayerName(@PathVariable String playerId,
+                                         @RequestBody Name newPlayerName) throws MissingIdentifierException {
+        if (playerId == null || playerId.isEmpty()) {
+            throw new MissingIdentifierException("Missing identification");
+        }
 
         UUID id = UUID.fromString(playerId);
 
