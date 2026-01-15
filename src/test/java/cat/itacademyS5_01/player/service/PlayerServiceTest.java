@@ -2,6 +2,7 @@ package cat.itacademyS5_01.player.service;
 
 import cat.itacademyS5_01.exception.MissingNameException;
 import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
 import org.junit.jupiter.api.Test;
@@ -24,13 +25,13 @@ class PlayerServiceTest {
     @Test
     void givenExistingName_whenFindByName_thenReturnPlayer() {
         PlayerService playerService = new PlayerService(playerRepository);
-        Player player = new Player("Pepe");
+        Player player = new Player(new Name("Pepe"));
 
-        when(playerRepository.findByName("Pepe")).thenReturn(Mono.just(player));
+        when(playerRepository.findByName(new Name("Pepe"))).thenReturn(Mono.just(player));
 
-        StepVerifier.create(playerService.findByName("Pepe"))
+        StepVerifier.create(playerService.findByName(new Name("Pepe"))
                 .assertNext(foundPlayer -> {
-                    assertEquals("Pepe", foundPlayer.getName());
+                    assertEquals(new Name("Pepe"), foundPlayer.getName());
                 })
                 .expectComplete()
                 .verify();
@@ -39,7 +40,7 @@ class PlayerServiceTest {
     @Test
     void givenNonExistingName_whenFindByName_thenReturnError() {
         PlayerService playerService = new PlayerService(playerRepository);
-        String nonExistingName = "NonExistent";
+        Name nonExistingName = new Name("NonExistent");
 
         when(playerRepository.findByName(nonExistingName)).thenReturn(Mono.empty());
 
@@ -66,7 +67,7 @@ class PlayerServiceTest {
     @Test
     void givenExistingName_whenCreate_thenReturnPlayerAlreadyExistsError() {
         PlayerService playerService = new PlayerService(playerRepository);
-        String existingName = "Pepe";
+        Name existingName = new Name("Pepe");
         Player existingPlayer = new Player(existingName);
 
         // Mock that player already exists
@@ -84,7 +85,7 @@ class PlayerServiceTest {
     @Test
     void givenNewName_whenCreate_thenReturnSuccess() {
         PlayerService playerService = new PlayerService(playerRepository);
-        String newName = "NewPlayer";
+        Name newName = new Name("NewPlayer");
 
         // Mock that player does not exist
         when(playerRepository.findByName(newName)).thenReturn(Mono.empty());
@@ -101,7 +102,7 @@ class PlayerServiceTest {
         PlayerService playerService = new PlayerService(playerRepository);
 
         // NO stubbing needed - service validates empty name BEFORE calling repository
-        StepVerifier.create(playerService.create(""))
+        StepVerifier.create(playerService.create(new Name("")))
                 .expectErrorMatches(throwable ->
                         throwable instanceof MissingNameException &&
                                 throwable.getMessage().contains("Name cannot be empty"))

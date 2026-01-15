@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.player.model;
 
+import cat.itacademyS5_01.player.dto.Name;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table("players")
 public class Player {
     @Getter
-    private final String name;
+    private final Name name;
     @Getter
     @Id
     private UUID id;
@@ -24,7 +24,7 @@ public class Player {
     @Getter
     private int gamesTied;
 
-    public Player(String name) {
+    public Player(Name name) {
         this.name = name;
         this.gamesWon = 0;
         this.gamesLost = 0;
@@ -37,7 +37,6 @@ public class Player {
     public void incrementGameLost() {
         this.gamesLost++;
     }
-
 
     public void incrementGameWon() {
         this.gamesWon++;

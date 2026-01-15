@@ -1,12 +1,16 @@
 package cat.itacademyS5_01.player.controller;
 
+import cat.itacademyS5_01.exception.MissingIdentifierException;
 import cat.itacademyS5_01.exception.MissingNameException;
 import cat.itacademyS5_01.player.dto.PlayerRequest;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.service.PlayerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/players")
@@ -19,12 +23,27 @@ public class PlayerController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Player> newPlayer(@RequestBody PlayerRequest playerRequest) {
-        if (playerRequest.name() == null || playerRequest.name().isEmpty()) {
-            throw new MissingNameException("Missing name");
-        }
-
+    public Mono<Player> newPlayer( @Valid @RequestBody PlayerRequest playerRequest) {
         return playerService.create(playerRequest.name());
+    }
+
+    @GetMapping("/{playerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Player> getPlayer( @Valid @PathVariable String playerId) throws MissingIdentifierException {
+
+        UUID id = UUID.fromString(playerId);
+
+        return playerService.getById(id);
+    }
+
+    @PutMapping("/{playerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Player> updatePlayerName( @Valid @PathVariable String playerId,
+                                          @Valid @RequestBody String newPlayerName) throws MissingIdentifierException {
+
+        UUID id = UUID.fromString(playerId);
+
+        return playerService.updatePlayerName(id,newPlayerName);
     }
 
     @GetMapping("/ping")

@@ -1,5 +1,6 @@
 package cat.itacademyS5_01.player.controller;
 
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.dto.PlayerRequest;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.service.PlayerService;
@@ -22,15 +23,15 @@ class PlayerControllerTest {
 
     @Test
     void newPlayerIsCreatedReturnSuccess() {
-        Player player = new Player("Alice");
+        Player player = new Player(new Name("Alice"));
 
-        Mockito.when(playerService.create("Alice"))
+        Mockito.when(playerService.create(new Name("Alice")))
                 .thenReturn(Mono.just(player));
 
         webTestClient.post()
                 .uri("/players/new")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new PlayerRequest("Alice"))
+                .bodyValue(new PlayerRequest(new Name("Alice")))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
@@ -42,7 +43,7 @@ class PlayerControllerTest {
         webTestClient.post()
                 .uri("/players/new")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new PlayerRequest(""))
+                .bodyValue(new PlayerRequest(new Name("")))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
