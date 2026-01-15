@@ -1,6 +1,7 @@
 package cat.itacademyS5_01.player.service;
 
 import cat.itacademyS5_01.game.dto.PlayerResult;
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     }
 
     @Override
-    public Mono<Player> updatePlayerStats(String playerName, PlayerResult result) {
+    public Mono<Player> updatePlayerStats(Name playerName, PlayerResult result) {
         return playerReactiveRepository.findByName(playerName)
                 .flatMap(player -> {
                     switch (result) {

@@ -25,11 +25,12 @@ class PlayerServiceTest {
     @Test
     void givenExistingName_whenFindByName_thenReturnPlayer() {
         PlayerService playerService = new PlayerService(playerRepository);
-        Player player = new Player(new Name("Pepe"));
+        Name name = new Name("Pepe");
+        Player player = new Player(name );
 
-        when(playerRepository.findByName(new Name("Pepe"))).thenReturn(Mono.just(player));
+        when(playerRepository.findByName(name)).thenReturn(Mono.just(player));
 
-        StepVerifier.create(playerService.findByName(new Name("Pepe"))
+        StepVerifier.create(playerService.findByName(name))
                 .assertNext(foundPlayer -> {
                     assertEquals(new Name("Pepe"), foundPlayer.getName());
                 })
@@ -54,8 +55,8 @@ class PlayerServiceTest {
     @Test
     void givenEmptyName_whenFindByName_thenReturnError() {
         PlayerService playerService = new PlayerService(playerRepository);
-        String emptyName = "";
 
+        Name emptyName = new Name("");
         // NO stubbing needed - service validates empty name BEFORE calling repository
         StepVerifier.create(playerService.findByName(emptyName))
                 .expectErrorMatches(throwable ->
@@ -67,6 +68,7 @@ class PlayerServiceTest {
     @Test
     void givenExistingName_whenCreate_thenReturnPlayerAlreadyExistsError() {
         PlayerService playerService = new PlayerService(playerRepository);
+
         Name existingName = new Name("Pepe");
         Player existingPlayer = new Player(existingName);
 
@@ -85,11 +87,10 @@ class PlayerServiceTest {
     @Test
     void givenNewName_whenCreate_thenReturnSuccess() {
         PlayerService playerService = new PlayerService(playerRepository);
+
         Name newName = new Name("NewPlayer");
 
-        // Mock that player does not exist
         when(playerRepository.findByName(newName)).thenReturn(Mono.empty());
-        // Use any() for save to match any Player instance
         when(playerRepository.save(any(Player.class))).thenReturn(Mono.empty());
 
         StepVerifier.create(playerService.create(newName))
@@ -101,7 +102,6 @@ class PlayerServiceTest {
     void givenEmptyName_whenCreate_thenReturnMissingNameError() {
         PlayerService playerService = new PlayerService(playerRepository);
 
-        // NO stubbing needed - service validates empty name BEFORE calling repository
         StepVerifier.create(playerService.create(new Name("")))
                 .expectErrorMatches(throwable ->
                         throwable instanceof MissingNameException &&
