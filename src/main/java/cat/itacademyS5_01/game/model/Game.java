@@ -1,6 +1,9 @@
 package cat.itacademyS5_01.game.model;
 
 import cat.itacademyS5_01.game.dto.PlayerResult;
+import cat.itacademyS5_01.player.model.Player;
+import cat.itacademyS5_01.player.service.PlayerStatsService;
+import cat.itacademyS5_01.player.service.PlayerStatsServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -50,27 +53,6 @@ public class Game {
         this.currentPlayerScore = 0;
         this.currentBankScore = 0;
     }
-
-    public void determineWinner() {
-        if (currentPlayerScore > 21) {
-            setResult(PlayerResult.LOSE);
-            incrementGameLost();
-        } else if (currentBankScore > 21) {
-            setResult(PlayerResult.WIN);
-            incrementGameWon();
-        } else if (currentPlayerScore > currentBankScore) {
-            setResult(PlayerResult.WIN);
-            incrementGameWon();
-        } else if (currentBankScore > currentPlayerScore) {
-            setResult(PlayerResult.LOSE);
-            incrementGameLost();
-        } else {
-            setResult(PlayerResult.TIE);
-            incrementGamesTied();
-        }
-    }
-
-
 
     public int getPlayerScore() {
         return currentPlayerScore;
