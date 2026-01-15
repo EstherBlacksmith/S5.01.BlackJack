@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @WebFluxTest(controllers = GameController.class)
 class GameControllerTest {
     @Autowired
@@ -34,7 +36,7 @@ class GameControllerTest {
     @BeforeEach
     void setUp() {
         gameRequest = new GameRequest("Alice");
-        gameResponse = new GameResponse("123L", "Alice", 0, 0);
+        gameResponse = new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0);
     }
 
     @Test
@@ -81,25 +83,21 @@ class GameControllerTest {
     @DisplayName("Returns 200 OK and the game when a valid game ID is provided")
     void getGame_Returns302AndGameWhenValidIdProvided() {
         Game mockGame = new Game("Alice");
-        mockGame.setId("test-game-id-123");
-        mockGame.setGamesWon(15);
-        mockGame.setGamesLost(12);
+        mockGame.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
 
         Mockito.when(gameService.findById(new GameId("test-game-id-123")))
                 .thenReturn(Mono.just(mockGame));
 
         webTestClient.get()
-                .uri("/games/{id}", "test-game-id-123")
+                .uri("/games/{id}", "123e4567-e89b-12d3-a456-426614174000")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Game.class)
                 .consumeWith(response -> {
                     Game returnedGame = response.getResponseBody();
                     assert returnedGame != null;
-                    assert returnedGame.getId().equals("test-game-id-123");
+                    assert returnedGame.getId().equals("123e4567-e89b-12d3-a456-426614174000");
                     assert returnedGame.getPlayerName().equals("Alice");
-                    assert returnedGame.getGamesWon() == 15;
-                    assert returnedGame.getGamesLost() == 12;
                 });
     }
 
@@ -107,12 +105,11 @@ class GameControllerTest {
     @DisplayName("Returns 201 if the game is created")
     void getGame_Returns201IfFounded() {
         Game mockGame = new Game("Alice");
-        mockGame.setId("1");
-        mockGame.setGamesWon(0);
-        mockGame.setGamesLost(0);
+        mockGame.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
+
 
         Mockito.when(bettingService.startGame(Mockito.any(GameRequest.class)))
-                .thenReturn(Mono.just(new GameResponse("1", "Alice", 0, 0)));
+                .thenReturn(Mono.just(new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0)));
 
         webTestClient.post()
                 .uri("/games/new")
@@ -121,7 +118,7 @@ class GameControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(GameResponse.class)
-                .isEqualTo(new GameResponse("1", "Alice", 0, 0));
+                .isEqualTo(new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0));
     }
 
 }

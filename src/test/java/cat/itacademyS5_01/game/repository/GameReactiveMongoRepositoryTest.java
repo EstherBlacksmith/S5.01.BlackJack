@@ -9,6 +9,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -22,7 +24,7 @@ class GameReactiveMongoRepositoryTest {
     @Test
     public void givenValue_whenFindAllByPlayerName_thenFindAccount() {
         Game game = new Game("Pepe");
-        game.setId("1L");
+        game.setId(UUID.fromString("1L"));
 
         when(gameReactiveMongoRepository.save(any(Game.class))).thenReturn(Mono.just(game));
         when(gameReactiveMongoRepository.findAllByPlayerName("Pepe")).thenReturn(Flux.just(game));
@@ -31,7 +33,7 @@ class GameReactiveMongoRepositoryTest {
         StepVerifier.create(gameReactiveMongoRepository.save(game))
                 .assertNext(savedGame -> {
                     assertEquals("Pepe", savedGame.getPlayerName());
-                    assertEquals("1L", savedGame.getId());
+                    assertEquals(UUID.fromString("1L"), savedGame.getId());
                 })
                 .expectComplete()
                 .verify();
@@ -40,7 +42,7 @@ class GameReactiveMongoRepositoryTest {
         StepVerifier.create(gameReactiveMongoRepository.findAllByPlayerName("Pepe"))
                 .assertNext(foundGame -> {
                     assertEquals("Pepe", foundGame.getPlayerName());
-                    assertEquals("1L", foundGame.getId());
+                    assertEquals(UUID.fromString("1L"), foundGame.getId());
                 })
                 .expectComplete()
                 .verify();
