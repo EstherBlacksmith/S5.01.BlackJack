@@ -62,7 +62,7 @@ public class PlayerActionStrategyConfig {
         List<String> clubs = printSuits();
 
 
-
+return 0;
 
 //TODO: acabar de implemtar la logica de la baraja y de las cartas
 /*En el juego de Blackjack, una baraja estándar tiene las siguientes características:
