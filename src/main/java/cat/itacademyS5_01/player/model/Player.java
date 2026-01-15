@@ -30,16 +30,16 @@ public class Player {
         this.gamesLost = 0;
         this.gamesTied = 0;
     }
-    private void incrementGamesTied() {
+    public void incrementGamesTied() {
         this.gamesTied++;
     }
 
-    private void incrementGameLost() {
+    public void incrementGameLost() {
         this.gamesLost++;
     }
 
 
-    private void incrementGameWon() {
+    public void incrementGameWon() {
         this.gamesWon++;
     }
 }
