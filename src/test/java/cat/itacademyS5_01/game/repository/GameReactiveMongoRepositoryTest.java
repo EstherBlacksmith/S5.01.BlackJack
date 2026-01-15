@@ -1,6 +1,7 @@
 package cat.itacademyS5_01.game.repository;
 
 import cat.itacademyS5_01.game.model.Game;
+import cat.itacademyS5_01.player.dto.Name;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -27,7 +28,7 @@ class GameReactiveMongoRepositoryTest {
         game.setId(UUID.fromString("1L"));
 
         when(gameReactiveMongoRepository.save(any(Game.class))).thenReturn(Mono.just(game));
-        when(gameReactiveMongoRepository.findAllByPlayerName("Pepe")).thenReturn(Flux.just(game));
+        when(gameReactiveMongoRepository.findAllByPlayerName(new Name("Pepe"))).thenReturn(Flux.just(game));
 
 
         StepVerifier.create(gameReactiveMongoRepository.save(game))
@@ -39,7 +40,7 @@ class GameReactiveMongoRepositoryTest {
                 .verify();
 
 
-        StepVerifier.create(gameReactiveMongoRepository.findAllByPlayerName("Pepe"))
+        StepVerifier.create(gameReactiveMongoRepository.findAllByPlayerName(new Name("Pepe")))
                 .assertNext(foundGame -> {
                     assertEquals("Pepe", foundGame.getPlayerName());
                     assertEquals(UUID.fromString("1L"), foundGame.getId());

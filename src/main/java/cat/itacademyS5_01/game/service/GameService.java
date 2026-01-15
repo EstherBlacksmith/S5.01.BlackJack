@@ -5,6 +5,7 @@ import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.repository.GameRepository;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
 import cat.itacademyS5_01.player.service.PlayerStatsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -50,6 +51,9 @@ public class GameService {
     }
 
 
+    public Mono<Void> deleteById(@Valid UUID gameId) {
+        return gameRepository.deleteById(gameId);
     }
+}
 
 

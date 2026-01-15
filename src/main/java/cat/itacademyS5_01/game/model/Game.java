@@ -41,13 +41,15 @@ public class Game {
     @Setter
     private String winner;
 
-    private PlayerStatsService playerStatsService ;
+    private final PlayerStatsService playerStatsService ;
 
-    public Game() {
+    public Game(PlayerStatsService playerStatsService) {
+        this.playerStatsService = playerStatsService;
         this.id = UUID.randomUUID();
     }
 
-    public Game(Name playerName) {
+    public Game(Name playerName, PlayerStatsService playerStatsService) {
+        this.playerStatsService = playerStatsService;
         this.id = UUID.randomUUID();
         this.playerName = playerName;
         this.currentPlayerScore = 0;

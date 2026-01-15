@@ -5,6 +5,7 @@ import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.betting.service.BettingService;
+import cat.itacademyS5_01.player.dto.Name;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -81,10 +82,10 @@ class GameControllerTest {
     @Test
     @DisplayName("Returns 200 OK and the game when a valid game ID is provided")
     void getGame_Returns302AndGameWhenValidIdProvided() {
-        Game mockGame = new Game("Alice");
+        Game mockGame = new Game(new Name("Alice"));
         mockGame.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
 
-        Mockito.when(gameService.findById(new GameId("test-game-id-123")))
+        Mockito.when(gameService.findById(UUID.fromString("123e4567-e89b-12d3-a456-426614174000")))
                 .thenReturn(Mono.just(mockGame));
 
         webTestClient.get()
@@ -103,7 +104,7 @@ class GameControllerTest {
     @Test
     @DisplayName("Returns 201 if the game is created")
     void getGame_Returns201IfFounded() {
-        Game mockGame = new Game("Alice");
+        Game mockGame = new Game(new Name("Alice"));
         mockGame.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
 
 

@@ -34,16 +34,23 @@ public class GameController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Game> getGame(@PathVariable UUID gameId) throws MissingIdentifierException {
+    public Mono<Game> getGame(@PathVariable UUID id) throws MissingIdentifierException {
 
-        return gameService.findById(gameId);
+        return gameService.findById(id);
     }
 
 
     @PostMapping("{id}/play")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Game> makeMove(@Valid @PathVariable UUID gameId, @Valid @RequestBody  MoveRequest moveRequest) throws MissingIdentifierException {
+    public Mono<Game> makeMove(@Valid @PathVariable UUID id, @Valid @RequestBody  MoveRequest moveRequest) throws MissingIdentifierException {
 
-        return bettingService.makeMove(gameId,moveRequest);
+        return bettingService.makeMove(id,moveRequest);
+    }
+
+    @DeleteMapping("{id}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> deleteGame(@Valid @PathVariable UUID id) throws MissingIdentifierException {
+
+        return gameService.deleteById(id);
     }
 }
