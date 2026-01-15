@@ -6,6 +6,7 @@ import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
+import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,7 @@ public class BettingService {
     }
 
     public Mono<GameResponse> startGame(GameRequest gameRequest) {
-        String playerName = gameRequest.playerName();
+        Name playerName = gameRequest.playerName();
 
         return playerService.findByName(playerName)
                 .switchIfEmpty(playerService.create(playerName))
