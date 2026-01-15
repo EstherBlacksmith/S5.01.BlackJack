@@ -1,9 +1,7 @@
 package cat.itacademyS5_01.game.model;
 
 import cat.itacademyS5_01.game.dto.PlayerResult;
-import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.service.PlayerStatsService;
-import cat.itacademyS5_01.player.service.PlayerStatsServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -42,6 +40,7 @@ public class Game {
     @Setter
     private String winner;
 
+    private PlayerStatsService playerStatsService ;
 
     public Game() {
         this.id = UUID.randomUUID();
@@ -64,6 +63,21 @@ public class Game {
     public void addCardToPlayer(int newCard) {
     }
 
+    public void determineWinner() {
 
+        if (getPlayerScore() > 21) {
+            setResult(PlayerResult.LOSE);
+        } else if (getCurrentBankScore() > 21) {
+            setResult(PlayerResult.WIN);
+        } else if (getCurrentPlayerScore() > getCurrentBankScore()) {
+            setResult(PlayerResult.WIN);
+        } else if (getCurrentBankScore() > getCurrentPlayerScore() ) {
+            setResult(PlayerResult.LOSE);
+        } else {
+            setResult(PlayerResult.TIE);
+        }
+
+        playerStatsService.updatePlayerStats(getPlayerName(),getResult());
+    }
 }
 
