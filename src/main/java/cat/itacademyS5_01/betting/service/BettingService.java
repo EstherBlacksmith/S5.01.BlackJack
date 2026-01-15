@@ -3,7 +3,6 @@ package cat.itacademyS5_01.betting.service;
 import cat.itacademyS5_01.exception.InvalidMovementException;
 import cat.itacademyS5_01.game.dto.*;
 import cat.itacademyS5_01.game.model.Game;
-import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
 import cat.itacademyS5_01.player.dto.Name;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class BettingService {
@@ -42,9 +42,9 @@ public class BettingService {
                 ));
     }
 
-    public Mono<Game> makeMove(GameId gameId, MoveRequest moveRequest) {
+    public Mono<Game> makeMove(UUID gameId, MoveRequest moveRequest) {
         return gameService.findById(gameId)
-                .switchIfEmpty(Mono.error(new IllegalArgumentException("Game not found with ID: " + gameId.value())))
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("Game not found with ID: " + gameId)))
                 .flatMap(game -> {
                     PlayerActionStrategy playerActionStrategy = strategies.get(moveRequest.playerAction());
                     if (playerActionStrategy == null) {

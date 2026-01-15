@@ -3,7 +3,6 @@ package cat.itacademyS5_01.game.controller;
 import cat.itacademyS5_01.game.dto.GameRequest;
 import cat.itacademyS5_01.game.dto.GameResponse;
 import cat.itacademyS5_01.game.model.Game;
-import cat.itacademyS5_01.game.model.GameId;
 import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.betting.service.BettingService;
 import org.junit.jupiter.api.BeforeEach;

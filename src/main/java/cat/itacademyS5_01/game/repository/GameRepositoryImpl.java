@@ -1,7 +1,6 @@
 package cat.itacademyS5_01.game.repository;
 
 import cat.itacademyS5_01.game.model.Game;
-import cat.itacademyS5_01.game.model.GameId;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
