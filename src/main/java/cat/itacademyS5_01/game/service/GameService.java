@@ -1,6 +1,7 @@
 package cat.itacademyS5_01.game.service;
 
 import cat.itacademyS5_01.game.dto.MoveRequest;
+import cat.itacademyS5_01.game.dto.PlayerResult;
 import cat.itacademyS5_01.game.model.Game;
 import cat.itacademyS5_01.game.repository.GameRepository;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
@@ -53,6 +54,20 @@ public class GameService {
 
     public Mono<Void> deleteById(@Valid UUID gameId) {
         return gameRepository.deleteById(gameId);
+    }
+
+
+    public Mono<Game> finishGame(UUID gameId) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    PlayerResult result = game.determineWinner();
+                    game.setResult(result);
+                    game.setGameOver(true);
+
+                    return playerStatsService
+                            .updatePlayerStats(game.getPlayerName(), result)
+                            .then(gameRepository.save(game));
+                });
     }
 }
 

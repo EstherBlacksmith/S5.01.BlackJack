@@ -41,15 +41,11 @@ public class Game {
     @Setter
     private String winner;
 
-    private final PlayerStatsService playerStatsService ;
-
-    public Game(PlayerStatsService playerStatsService) {
-        this.playerStatsService = playerStatsService;
+    public Game() {
         this.id = UUID.randomUUID();
     }
 
-    public Game(Name playerName, PlayerStatsService playerStatsService) {
-        this.playerStatsService = playerStatsService;
+    public Game(Name playerName) {
         this.id = UUID.randomUUID();
         this.playerName = playerName;
         this.currentPlayerScore = 0;
@@ -66,7 +62,7 @@ public class Game {
     public void addCardToPlayer(int newCard) {
     }
 
-    public void determineWinner() {
+    public PlayerResult determineWinner() {
 
         if (getPlayerScore() > 21) {
             setResult(PlayerResult.LOSE);
@@ -80,7 +76,8 @@ public class Game {
             setResult(PlayerResult.TIE);
         }
 
-        playerStatsService.updatePlayerStats(getPlayerName(),getResult());
+        return getResult();
+
     }
 }
 

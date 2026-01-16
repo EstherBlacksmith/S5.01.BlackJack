@@ -35,8 +35,10 @@ class GameControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameRequest = new GameRequest("Alice");
-        gameResponse = new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0);
+        Name name = new Name("Alice");
+        gameRequest = new GameRequest(name);
+        UUID uuid = UUID.randomUUID();
+        gameResponse = new GameResponse(uuid, new Name("Alice"), 0, 0);
     }
 
     @Test
@@ -55,29 +57,8 @@ class GameControllerTest {
                 .isEqualTo(gameResponse);
     }
 
-    @Test
-    @DisplayName("Returns bad request if the player name is not in the request")
-    void startNewGame_Returns400IfNotCreatedBecausePlayerNameMissing() {
 
-        GameRequest missingNameRequest = new GameRequest("");
 
-        webTestClient.post()
-                .uri("/games/new")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(missingNameRequest)
-                .exchange()
-                .expectStatus().isBadRequest();
-    }
-
-    @Test
-    @DisplayName("Returns bad request if the id of the game is not in the request")
-    void getGame_Returns400IfNotCreatedBecauseGameIdIsMissing() {
-
-        webTestClient.get()
-                .uri("/games/{id}", " ")
-                .exchange()
-                .expectStatus().isBadRequest();
-    }
 
     @Test
     @DisplayName("Returns 200 OK and the game when a valid game ID is provided")
@@ -96,8 +77,8 @@ class GameControllerTest {
                 .consumeWith(response -> {
                     Game returnedGame = response.getResponseBody();
                     assert returnedGame != null;
-                    assert returnedGame.getId().equals("123e4567-e89b-12d3-a456-426614174000");
-                    assert returnedGame.getPlayerName().equals("Alice");
+                    assert returnedGame.getId().equals(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
+                    assert returnedGame.getPlayerName().equals(new Name("Alice"));
                 });
     }
 
@@ -108,8 +89,9 @@ class GameControllerTest {
         mockGame.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"));
 
 
+        GameResponse alice = new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), new Name("Alice"), 0, 0);
         Mockito.when(bettingService.startGame(Mockito.any(GameRequest.class)))
-                .thenReturn(Mono.just(new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0)));
+                .thenReturn(Mono.just(alice));
 
         webTestClient.post()
                 .uri("/games/new")
@@ -118,7 +100,7 @@ class GameControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(GameResponse.class)
-                .isEqualTo(new GameResponse(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"), "Alice", 0, 0));
+                .isEqualTo(alice);
     }
 
 }

@@ -24,8 +24,9 @@ class GameReactiveMongoRepositoryTest {
 
     @Test
     public void givenValue_whenFindAllByPlayerName_thenFindAccount() {
-        Game game = new Game("Pepe");
-        game.setId(UUID.fromString("1L"));
+        Game game = new Game(new Name("Pepe"));
+        UUID uuid = UUID.randomUUID();
+        game.setId(uuid);
 
         when(gameReactiveMongoRepository.save(any(Game.class))).thenReturn(Mono.just(game));
         when(gameReactiveMongoRepository.findAllByPlayerName(new Name("Pepe"))).thenReturn(Flux.just(game));
@@ -33,8 +34,8 @@ class GameReactiveMongoRepositoryTest {
 
         StepVerifier.create(gameReactiveMongoRepository.save(game))
                 .assertNext(savedGame -> {
-                    assertEquals("Pepe", savedGame.getPlayerName());
-                    assertEquals(UUID.fromString("1L"), savedGame.getId());
+                    assertEquals(new Name("Pepe"), savedGame.getPlayerName());
+                    assertEquals(uuid, savedGame.getId());
                 })
                 .expectComplete()
                 .verify();
@@ -42,8 +43,8 @@ class GameReactiveMongoRepositoryTest {
 
         StepVerifier.create(gameReactiveMongoRepository.findAllByPlayerName(new Name("Pepe")))
                 .assertNext(foundGame -> {
-                    assertEquals("Pepe", foundGame.getPlayerName());
-                    assertEquals(UUID.fromString("1L"), foundGame.getId());
+                    assertEquals(new Name("Pepe"), foundGame.getPlayerName());
+                    assertEquals(uuid, foundGame.getId());
                 })
                 .expectComplete()
                 .verify();
