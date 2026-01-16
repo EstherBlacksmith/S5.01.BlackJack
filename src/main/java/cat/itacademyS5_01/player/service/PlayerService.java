@@ -27,7 +27,7 @@ public class PlayerService {
     }
 
     public Mono<Player> getById(UUID id) {
-        return playerReactiveRepository.findById(id.toString()).switchIfEmpty(Mono.error(new RuntimeException("Player not found")));
+        return playerReactiveRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException("Player not found")));
     }
 
     public Mono<Player> findByName(Name name) {
@@ -49,8 +49,8 @@ public class PlayerService {
     }
 
     public Mono<Player> deletePlayer(UUID id) {
-        return playerReactiveRepository.findById(id.toString())
-                .flatMap(player -> playerReactiveRepository.deleteById(id.toString())
+        return playerReactiveRepository.findById(id)
+                .flatMap(player -> playerReactiveRepository.deleteById(id)
                         .thenReturn(player));
     }
 
