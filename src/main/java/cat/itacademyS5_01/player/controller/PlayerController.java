@@ -6,6 +6,7 @@ import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.dto.PlayerRequest;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.service.PlayerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -23,33 +24,30 @@ public class PlayerController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Player> newPlayer(@RequestBody PlayerRequest playerRequest) {
+    public Mono<Player> newPlayer(@Valid @RequestBody PlayerRequest playerRequest) {
 
         return playerService.create(playerRequest.name());
     }
 
     @GetMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> getPlayer(@PathVariable String playerId) throws MissingIdentifierException {
-        if (playerId == null || playerId.isEmpty()) {
-            throw new MissingIdentifierException("Missing identification");
-        }
-        UUID id = UUID.fromString(playerId);
-
-        return playerService.getById(id);
+    public Mono<Player> getPlayer(@Valid @PathVariable UUID playerId) throws MissingIdentifierException {
+          return playerService.getById(playerId);
     }
 
     @PutMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> updatePlayerName(@PathVariable String playerId,
-                                         @RequestBody Name newPlayerName) throws MissingIdentifierException {
-        if (playerId == null || playerId.isEmpty()) {
-            throw new MissingIdentifierException("Missing identification");
-        }
+    public Mono<Player> updatePlayerName(@Valid @PathVariable UUID playerId,
+                                         @Valid @RequestBody Name newPlayerName) throws MissingIdentifierException {
 
-        UUID id = UUID.fromString(playerId);
+        return playerService.updatePlayerName(playerId,newPlayerName);
+    }
 
-        return playerService.updatePlayerName(id,newPlayerName);
+
+    @DeleteMapping("/{playerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Player> deletePlayerById(@PathVariable UUID playerId) throws MissingIdentifierException {
+        return playerService.deletePlayer(playerId);
     }
 
     @GetMapping("/ping")
