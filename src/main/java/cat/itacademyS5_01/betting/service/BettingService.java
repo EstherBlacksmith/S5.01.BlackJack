@@ -7,6 +7,7 @@ import cat.itacademyS5_01.game.service.GameService;
 import cat.itacademyS5_01.game.strategy.PlayerActionStrategy;
 import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.service.PlayerService;
+import cat.itacademyS5_01.player.service.PlayerStatsService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -17,12 +18,15 @@ import java.util.UUID;
 public class BettingService {
     private final PlayerService playerService;
     private final GameService gameService;
+    private final PlayerStatsService playerStatsService;
     private final Map<PlayerAction, PlayerActionStrategy> strategies;
 
-    public BettingService(PlayerService playerService, GameService gameService, Map<PlayerAction, PlayerActionStrategy> strategies) {
+    public BettingService(PlayerService playerService, GameService gameService, Map<PlayerAction, PlayerActionStrategy> strategies, PlayerStatsService playerStatsService) {
         this.playerService = playerService;
         this.gameService = gameService;
+        this.playerStatsService = playerStatsService;
         this.strategies = strategies;
+
     }
 
     public Mono<GameResponse> startGame(GameRequest gameRequest) {
@@ -51,6 +55,18 @@ public class BettingService {
                         return Mono.error(new InvalidMovementException("Invalid player action: " + moveRequest.playerAction()));
                     }
                     return playerActionStrategy.execute(game, moveRequest.wager());
-                });
+                })
+                .flatMap(game -> finishGame(game));
     }
+
+    private Mono<? extends Game> finishGame(Game game) {
+        PlayerResult result = game.determineWinner();
+        game.setResult(result);
+        game.setGameOver(true);
+
+        return playerStatsService
+                .updatePlayerStats(game.getPlayerName(), result)
+                .then(gameService.save(game));
+    }
+
 }
