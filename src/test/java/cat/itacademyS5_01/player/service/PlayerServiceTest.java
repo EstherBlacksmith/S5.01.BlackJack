@@ -1,16 +1,19 @@
 package cat.itacademyS5_01.player.service;
 
-import cat.itacademyS5_01.exception.MissingNameException;
 import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
 import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.core.publisher.Flux;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,11 +23,16 @@ import static org.mockito.Mockito.when;
 class PlayerServiceTest {
 
     @Mock
-    private PlayerReactiveRepository playerRepository;
+    private static PlayerReactiveRepository playerRepository;
 
+    private static PlayerService playerService;
+    @BeforeAll
+    static void setUp(){
+         playerService = new PlayerService(playerRepository);
+
+    }
     @Test
     void givenExistingName_whenFindByName_thenReturnPlayer() {
-        PlayerService playerService = new PlayerService(playerRepository);
         Name name = new Name("Pepe");
         Player player = new Player(name );
 
@@ -40,7 +48,6 @@ class PlayerServiceTest {
 
     @Test
     void givenNonExistingName_whenFindByName_thenReturnError() {
-        PlayerService playerService = new PlayerService(playerRepository);
         Name nonExistingName = new Name("NonExistent");
 
         when(playerRepository.findByName(nonExistingName)).thenReturn(Mono.empty());
@@ -55,14 +62,11 @@ class PlayerServiceTest {
 
     @Test
     void givenExistingName_whenCreate_thenReturnPlayerAlreadyExistsError() {
-        PlayerService playerService = new PlayerService(playerRepository);
 
         Name existingName = new Name("Pepe");
         Player existingPlayer = new Player(existingName);
 
-        // Mock that player already exists
         when(playerRepository.findByName(existingName)).thenReturn(Mono.just(existingPlayer));
-        // Mock save to avoid NullPointerException in switchIfEmpty (even though it shouldn't be called)
         when(playerRepository.save(any(Player.class))).thenReturn(Mono.empty());
 
         StepVerifier.create(playerService.create(existingName))
@@ -74,7 +78,6 @@ class PlayerServiceTest {
 
     @Test
     void givenNewName_whenCreate_thenReturnSuccess() {
-        PlayerService playerService = new PlayerService(playerRepository);
 
         Name newName = new Name("NewPlayer");
 
@@ -85,5 +88,7 @@ class PlayerServiceTest {
                 .expectComplete()
                 .verify();
     }
+
+
 
 }

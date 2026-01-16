@@ -5,6 +5,7 @@ import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
 import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,5 +55,7 @@ public class PlayerService {
                         .thenReturn(player));
     }
 
-
+    public Flux<Player> ranking() {
+        return playerReactiveRepository.findAllByOrderByGamesWonDesc();
+    }
 }

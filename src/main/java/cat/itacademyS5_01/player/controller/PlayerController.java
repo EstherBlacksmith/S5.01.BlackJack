@@ -9,6 +9,7 @@ import cat.itacademyS5_01.player.service.PlayerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -50,8 +51,10 @@ public class PlayerController {
         return playerService.deletePlayer(playerId);
     }
 
-    @GetMapping("/ping")
-    public Mono<String> ping() {
-        return Mono.just("ok");
+    @GetMapping("/ranking")
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<Player> ranking() throws MissingIdentifierException {
+        return playerService.ranking();
     }
+
 }

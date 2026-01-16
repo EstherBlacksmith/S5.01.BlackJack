@@ -18,13 +18,13 @@ public class Player {
     private UUID id;
 
     @Getter
-    private int gamesWon;
+    public int gamesWon;
 
     @Getter
-    private int gamesLost;
+    public int gamesLost;
 
     @Getter
-    private int gamesTied;
+    public int gamesTied;
 
     public Player(Name name) {
         this.name = name;
