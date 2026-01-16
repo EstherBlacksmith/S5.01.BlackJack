@@ -13,7 +13,6 @@ import java.util.UUID;
 @Repository
 public interface PlayerReactiveRepository extends ReactiveCrudRepository<Player, UUID> {
     Mono<Player> findByName(Name name);
-    Flux<Player> findByCategory(String category, Sort sort);
     Flux<Player> findAllByOrderByGamesWonDesc();
 
 }

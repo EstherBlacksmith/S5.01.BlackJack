@@ -4,16 +4,15 @@ import cat.itacademyS5_01.exception.PlayerAlreadyExistsException;
 import cat.itacademyS5_01.player.dto.Name;
 import cat.itacademyS5_01.player.model.Player;
 import cat.itacademyS5_01.player.repository.PlayerReactiveRepository;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.core.publisher.Flux;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.core.publisher.Flux;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,12 +22,13 @@ import static org.mockito.Mockito.when;
 class PlayerServiceTest {
 
     @Mock
-    private static PlayerReactiveRepository playerRepository;
+    private  PlayerReactiveRepository playerReactiveRepository;
 
-    private static PlayerService playerService;
-    @BeforeAll
-    static void setUp(){
-         playerService = new PlayerService(playerRepository);
+    private  PlayerService playerService;
+
+    @BeforeEach
+    void setUp(){
+         playerService = new PlayerService(playerReactiveRepository);
 
     }
     @Test
@@ -36,7 +36,7 @@ class PlayerServiceTest {
         Name name = new Name("Pepe");
         Player player = new Player(name );
 
-        when(playerRepository.findByName(name)).thenReturn(Mono.just(player));
+        when(playerReactiveRepository.findByName(name)).thenReturn(Mono.just(player));
 
         StepVerifier.create(playerService.findByName(name))
                 .assertNext(foundPlayer -> {
@@ -50,7 +50,7 @@ class PlayerServiceTest {
     void givenNonExistingName_whenFindByName_thenReturnError() {
         Name nonExistingName = new Name("NonExistent");
 
-        when(playerRepository.findByName(nonExistingName)).thenReturn(Mono.empty());
+        when(playerReactiveRepository.findByName(nonExistingName)).thenReturn(Mono.empty());
 
         StepVerifier.create(playerService.findByName(nonExistingName))
                 .expectErrorMatches(throwable ->
@@ -66,8 +66,8 @@ class PlayerServiceTest {
         Name existingName = new Name("Pepe");
         Player existingPlayer = new Player(existingName);
 
-        when(playerRepository.findByName(existingName)).thenReturn(Mono.just(existingPlayer));
-        when(playerRepository.save(any(Player.class))).thenReturn(Mono.empty());
+        when(playerReactiveRepository.findByName(existingName)).thenReturn(Mono.just(existingPlayer));
+        when(playerReactiveRepository.save(any(Player.class))).thenReturn(Mono.empty());
 
         StepVerifier.create(playerService.create(existingName))
                 .expectErrorMatches(throwable ->
@@ -81,8 +81,8 @@ class PlayerServiceTest {
 
         Name newName = new Name("NewPlayer");
 
-        when(playerRepository.findByName(newName)).thenReturn(Mono.empty());
-        when(playerRepository.save(any(Player.class))).thenReturn(Mono.empty());
+        when(playerReactiveRepository.findByName(newName)).thenReturn(Mono.empty());
+        when(playerReactiveRepository.save(any(Player.class))).thenReturn(Mono.empty());
 
         StepVerifier.create(playerService.create(newName))
                 .expectComplete()
