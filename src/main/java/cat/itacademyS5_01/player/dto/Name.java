@@ -1,7 +1,7 @@
 package cat.itacademyS5_01.player.dto;
 
 import cat.itacademyS5_01.exception.MissingNameException;
-import jakarta.validation.constraints.NotBlank;
+
 
 public record Name(String name) {
     public Name {

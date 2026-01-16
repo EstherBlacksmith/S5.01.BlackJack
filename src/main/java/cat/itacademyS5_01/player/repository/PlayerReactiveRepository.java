@@ -6,9 +6,11 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Repository
 public interface PlayerReactiveRepository extends ReactiveCrudRepository<Player, Long> {
-    Mono<Player> findById(String id);
+    Mono<Player> findById(UUID id);
     Mono<Player> findByName(Name name);
-    Mono<Player> deleteById(String id);
+    Mono<Player> deleteById(UUID id);
 }

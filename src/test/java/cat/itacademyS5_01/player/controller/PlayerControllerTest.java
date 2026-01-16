@@ -44,5 +44,67 @@ class PlayerControllerTest {
         Mockito.verify(playerService).create(new Name("Alice"));
     }
 
+    @Test
+    void playerIsDeletedReturnSuccess() {
 
+        UUID uuid = UUID.randomUUID();
+
+        Player player = new Player(new Name("Alice"));
+        Mockito.when(playerService.create(new Name("Alice")))
+                .thenReturn(Mono.just(player));
+
+        Mockito.when(playerService.deletePlayer(uuid))
+                .thenReturn(Mono.just(player));
+
+        webTestClient.delete()
+                .uri(uriBuilder -> uriBuilder.path("/players/{id}").build(uuid))
+                .exchange()
+                .expectStatus().isOk();
+
+        Mockito.verify(playerService).deletePlayer(uuid);
+    }
+
+
+
+    @Test
+    void playerFindByIdReturnThePlayer() {
+
+        UUID uuid = UUID.randomUUID();
+        Name name = new Name("Paquita");
+        Player player = new Player(name);
+
+        Mockito.when(playerService.getById(uuid))
+                .thenReturn(Mono.just(player));
+
+        webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("/players/{id}").build(uuid))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name.name").isEqualTo("Paquita");
+
+
+        Mockito.verify(playerService).getById(uuid);
+    }
+
+    @Test
+    void playerUpdateNameReturnThePlayer() {
+
+        UUID uuid = UUID.randomUUID();
+        Name name = new Name("Paquita");
+        Player player = new Player(name);
+
+        Mockito.when(playerService.updatePlayerName(uuid,name))
+                .thenReturn(Mono.just(player));
+
+        Name newName = new Name("Paquita Salas");
+        webTestClient.put()
+                .uri(uriBuilder -> uriBuilder.path("/players/{id}").build(uuid))
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(newName)
+                .exchange();
+
+
+        Mockito.verify(playerService).updatePlayerName(uuid,newName);
+    }
 }
