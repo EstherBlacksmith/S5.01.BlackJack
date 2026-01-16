@@ -1,5 +1,5 @@
 package cat.itacademyS5_01.config;
-/*
+
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,4 +23,4 @@ public class R2dbcConfig {
         initializer.setDatabasePopulator(populator);
         return initializer;
     }
-}*/
+}
