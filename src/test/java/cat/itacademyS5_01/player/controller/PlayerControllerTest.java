@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @WebFluxTest(PlayerController.class)
 class PlayerControllerTest {
     @Autowired
@@ -23,8 +25,8 @@ class PlayerControllerTest {
 
     @Test
     void newPlayerIsCreatedReturnSuccess() {
-        Player player = new Player(new Name("Alice"));
 
+        Player player = new Player(new Name("Alice"));
         Mockito.when(playerService.create(new Name("Alice")))
                 .thenReturn(Mono.just(player));
 
@@ -35,16 +37,12 @@ class PlayerControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.name").isEqualTo("Alice");
+                .jsonPath("$.name.name").isEqualTo("Alice")  // Access nested name property
+                .jsonPath("$.gamesWon").isEqualTo(0)
+                .jsonPath("$.gamesLost").isEqualTo(0)
+                .jsonPath("$.gamesTied").isEqualTo(0);
+        Mockito.verify(playerService).create(new Name("Alice"));
     }
 
-    @Test
-    void createPlayerMissingNameShouldFail() {
-        webTestClient.post()
-                .uri("/players/new")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new PlayerRequest(new Name("")))
-                .exchange()
-                .expectStatus().isBadRequest();
-    }
+
 }

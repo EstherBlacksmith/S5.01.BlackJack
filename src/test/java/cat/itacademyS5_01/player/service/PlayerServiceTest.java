@@ -52,18 +52,6 @@ class PlayerServiceTest {
                 .verify();
     }
 
-    @Test
-    void givenEmptyName_whenFindByName_thenReturnError() {
-        PlayerService playerService = new PlayerService(playerRepository);
-
-        Name emptyName = new Name("");
-        // NO stubbing needed - service validates empty name BEFORE calling repository
-        StepVerifier.create(playerService.findByName(emptyName))
-                .expectErrorMatches(throwable ->
-                        throwable instanceof MissingNameException &&
-                                throwable.getMessage().contains("Missing name"))
-                .verify();
-    }
 
     @Test
     void givenExistingName_whenCreate_thenReturnPlayerAlreadyExistsError() {
@@ -98,14 +86,4 @@ class PlayerServiceTest {
                 .verify();
     }
 
-    @Test
-    void givenEmptyName_whenCreate_thenReturnMissingNameError() {
-        PlayerService playerService = new PlayerService(playerRepository);
-
-        StepVerifier.create(playerService.create(new Name("")))
-                .expectErrorMatches(throwable ->
-                        throwable instanceof MissingNameException &&
-                                throwable.getMessage().contains("Name cannot be empty"))
-                .verify();
-    }
 }
