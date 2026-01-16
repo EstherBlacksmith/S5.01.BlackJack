@@ -107,4 +107,16 @@ class PlayerControllerTest {
 
         Mockito.verify(playerService).updatePlayerName(uuid,newName);
     }
+
+    @Test
+    void createPlayerWithEmptyNameReturnsBadRequest() {
+        webTestClient.post()
+                .uri("/players/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"name\": \"\"}")
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+
 }

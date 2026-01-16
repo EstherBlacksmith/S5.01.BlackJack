@@ -24,21 +24,21 @@ public class PlayerController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Player> newPlayer(@Valid @RequestBody PlayerRequest playerRequest) {
+    public Mono<Player> newPlayer(@RequestBody @Valid PlayerRequest playerRequest) {
 
         return playerService.create(playerRequest.name());
     }
 
     @GetMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> getPlayer(@Valid @PathVariable UUID playerId) throws MissingIdentifierException {
+    public Mono<Player> getPlayer(@PathVariable @Valid UUID playerId) throws MissingIdentifierException {
           return playerService.getById(playerId);
     }
 
     @PutMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> updatePlayerName(@Valid @PathVariable UUID playerId,
-                                         @Valid @RequestBody Name newPlayerName) throws MissingIdentifierException {
+    public Mono<Player> updatePlayerName(@PathVariable @Valid  UUID playerId,
+                                         @RequestBody @Valid Name newPlayerName) throws MissingIdentifierException {
 
         return playerService.updatePlayerName(playerId,newPlayerName);
     }
@@ -46,7 +46,7 @@ public class PlayerController {
 
     @DeleteMapping("/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Player> deletePlayerById(@PathVariable UUID playerId) throws MissingIdentifierException {
+    public Mono<Player> deletePlayerById(@PathVariable @Valid UUID playerId) throws MissingIdentifierException {
         return playerService.deletePlayer(playerId);
     }
 
